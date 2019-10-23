@@ -1,5 +1,10 @@
 import puppeteer from "puppeteer";
 
+process.addListener("unhandledRejection", (err) => {
+  console.error(err);
+  process.exit(1);
+});
+
 (async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -11,10 +16,19 @@ import puppeteer from "puppeteer";
     const result: [string, number][] = [];
 
     itemElements.forEach(item => {
-      const itemName = item.querySelector(".trade-up-item__name")!.textContent || "";
-      const price = +(item.querySelector(".trade-up-item__price")!.attributes.getNamedItem("data-product-price-unformatted")!.value);
+      const nameNode = item.querySelector(".trade-up-item__name");
+      const priceNode = item.querySelector(".trade-up-item__price");
 
-      result.push([itemName, price]);
+      if (nameNode && priceNode) {
+        const priceAttribute = priceNode.attributes.getNamedItem("data-product-price-unformatted");
+
+        if (priceAttribute) {
+          const itemName = nameNode.textContent || "";
+          const price = + priceAttribute.value;
+
+          result.push([itemName, price]);
+        }
+      }
     })
 
     return result;
