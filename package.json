@@ -1,0 +1,19 @@
+{
+  "name": "dyson",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node ./dist/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^1.20.0"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^1.20.2",
+    "typescript": "^3.6.4"
+  }
+}
